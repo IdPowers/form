@@ -14,7 +14,3 @@ class IndexView(CreateView):
 
 class AjaxCompanyCreateView(AjaxCreateView):
     form_class = CompanyForm
-
-    def get_form_kwargs(self):
-        print self.request.FILES
-        return super(AjaxCompanyCreateView, self).get_form_kwargs()
