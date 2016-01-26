@@ -1,5 +1,6 @@
 # coding=utf-8
 from __future__ import unicode_literals
+
 from django import forms
 from applications.companies.models import Company
 
@@ -17,7 +18,13 @@ class CompanyForm(forms.ModelForm):
     def clean_agreement(self):
         value = self.cleaned_data.get('agreement')
         if not value:
-            raise forms.ValidationError(
-                "Your didn't agree")
+            raise forms.ValidationError("Your didn't agree")
+
+        return value
+
+    def clean_agreement_2(self):
+        value = self.cleaned_data.get('agreement_2')
+        if not value:
+            raise forms.ValidationError("Your didn't agree")
 
         return value
