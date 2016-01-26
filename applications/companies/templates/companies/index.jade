@@ -1,0 +1,128 @@
+include /frontend/mixins/mixin
+
+| {% load static widget_tweaks %}
+
+
+mixin field
+  if attributes.class
+    -cls ='|add_class:"' + attributes.class + '"'
+  else
+    -cls = ''
+
+  +e.item
+    +b.mdl-textfield_floating-label.mdl-js-textfield._full-width
+      != '{{ ' + attributes.field + cls + ' }}'
+      +e('label').label.__label(for="{{ " + attributes.field + '.id_for_label }}')= "{{ " + attributes.field + ".label }}"
+      +e('span').error.js-error
+
+mixin checkbox
+  +b('label').mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect(class=attributes.class)
+    +e.input(type='checkbox', name=attributes.name, value=attributes.value, id=attributes.id)&attributes(attributes)
+    +e('span').label: block
+
+mixin checkboxChoice(checkbox)
+  -var checkbox = attributes.checkbox
+  -var name = "{{ " + checkbox + ".name }}"
+  -var choice_value = "{{ " + checkbox + ".choice_value }}"
+  -var id_for_label = "{{ " + checkbox + ".id_for_label }}"
+  -var choice_label = "{{ " + checkbox + ".choice_label }}"
+
+  +checkbox(name=name, value=choice_value, id=id_for_label, label=choice_label, checkbox=checkbox, class=attributes.class)
+    = choice_label
+
+mixin fileMixin
+  -var label = "{{ " + attributes.field + ".label }}"
+
+  +e.cell
+    +e.label= label
+    +b.input-file.js-input-file.__attachment
+      = "{{ " + attributes.field + " }}"
+      +b.mdl-button.mdl-js-button._raised.mdl-js-ripple-effect.__select(data-type='select') Upload file
+      +b.mdl-textfield.__name
+        +e.input.__text(data-type='name')
+
+-var introText = "Welcome to service.com. If you are here, you are interested in signing up for our Cell Phone Program. If you have not already signed up as a Service Pro on Service.com, "
+-var title = 'Cell Phone Program'
+
+doctype html
+html(lang='en-En')
+  head
+    title= title
+    link(href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900',
+      rel='stylesheet', type='text/css')
+    link(rel="stylesheet", href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.orange-light_blue.min.css")
+    link(rel="stylesheet", href="{% static 'vendor/mdl-jquery-modal-dialog/mdl-jquery-modal-dialog.css' %}")
+    link(rel="stylesheet", href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}")
+    link(rel='stylesheet', href="{% static 'companies/css/index.css' %}")
+  +b('body').mdl-color_blue-grey-100
+    +b('main').grid.mdl-grid
+      +b.mdl-cell.__cell._10-col
+        +b.card.mdl-card.mdl-shadow_2dp
+          +e.header.mdl-color_light-blue-500.mdl-color-text_white
+            +e('h3').title= title
+          +e.body
+            +e('p').intro-text= introText
+              +b.mdl-color-text_light-blue-700(href='https://service.com/register/pro', target='_blank') click here
+            +b('form').form.js-sign-up-form(method='POST', data-url="{% url 'companies:ajax_company_create' %}")
+              | {% csrf_token %}
+              +field.mdl-textfield__input(field='form.name')
+              +field.mdl-textfield__input.js-phone(field='form.phone')
+              +field.mdl-textfield__input(field='form.contact')
+              +field.mdl-textfield__input(field='form.number_service_trucks')
+              +field.mdl-textfield__input(field='form.number_service_pros')
+              +field.mdl-textfield__input(field='form.current_merchant')
+              +e.item_not-textfield
+                +b.label Method of accepting cards
+                +b.checkbox-group.__item
+                  +for(items='checkbox', list='form.current_method_cards')
+                    +e.item
+                      +checkboxChoice(checkbox="checkbox")
+                +e.error.js-error.mdl-color-text_red-600
+              +field.mdl-textfield__input(field='form.average_yrb')
+              +field.mdl-textfield__input(field='form.average_yrt')
+              +field.mdl-textfield__input(field='form.average_ymb')
+              +field.mdl-textfield__input(field='form.average_ymt')
+              +e.item_not-textfield
+                +fileMixin(field='form.cellbills')
+                +fileMixin(field='form.merchantbills')
+              +e.item_not-textfield._checkbox
+                +checkbox.js-sign-up-agreement(name='{{ form.agreement.name }}', id='{{ form.agreement.id_for_label }}', data-value='1')
+                  = "I agree to the "
+                  a(href='https://service.com/terms-of-service/pro') Terms of Service
+                  = " and "
+                  a(href='https://service.com/privacy') Privacy Policy
+                  = "."
+              +e.item_not-textfield._checkbox
+                +checkbox.js-sign-up-agreement(name="{{ form.agreement_2.name }}", id="{{ form.agreement_2.id_for_label }}", data-value='2')
+                  = "By clicking here - you agree that you will process all of your businesses credit and debit transactions with Service.com and in exchange you will receive the benefit of Service.com paying for your Service Pros Cell Phone Bills"
+              +e.item
+                +b('button').mdl-button.mdl-js-button._raised.mdl-js-ripple-effect._accent.mdl-color-text_white.js-sign-up-button.__button(
+                  type='submit', disabled=true) Sign up
+
+  +b('footer').footer
+    +e.left
+      +e('p').links
+        a(href="http://blog.service.com") Blog
+        br
+        a(href="http://support.service.com/support/home") Home Owner Support
+        br
+        a(href="https://service.com/privacy", target="_top") Privacy Policy
+        br
+        a(href="https://service.com/terms-of-service", target="_top") Terms of Service
+    +e.center
+    +e.right
+      +e.icons
+        a(href="https://www.facebook.com/servicedot", target="_blank"): i.fa.fa-facebook
+        a(href="https://twitter.com/servicedot", target="_blank"): i.fa.fa-twitter
+        a(href="https://www.linkedin.com/company/service.com", target="_blank"): i.fa.fa-linkedin
+        a(href="https://www.pinterest.com/servicedot", target="_blank"): i.fa.fa-pinterest
+      +e('p').company-name Service.com © 2015
+
+  script(src="{% static 'vendor/material-design-lite/material.js' %}")
+  script(src="{% static 'vendor/jquery/dist/jquery.js' %}")
+  script(src="{% static 'vendor/jquery-form/jquery.form.js' %}")
+  script(src="{% static 'vendor/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}")
+  script(src="{% static 'vendor/jquery.cookie/jquery.cookie.js' %}")
+  script(src="{% static 'vendor/mdl-jquery-modal-dialog/mdl-jquery-modal-dialog.js' %}")
+  script(src="{% static 'companies/js/input-file.js' %}")
+  script(src="{% static 'companies/js/index.js' %}")

@@ -1,0 +1,17 @@
+{
+  "name": "forms",
+  "version": "1.0.0",
+  "description": "forms",
+  "author": "Dmitry Kovalev",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-csso": "^1.0.1",
+    "gulp-main-bower-files": "^1.3.1",
+    "gulp-stylus": "^2.2.0",
+    "gulp-watch": "^4.3.5",
+    "html2bl": "git+https://github.com/dima-koval/html2bl.git"
+  }
+}

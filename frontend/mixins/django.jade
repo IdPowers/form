@@ -1,0 +1,75 @@
+mixin if(condition)
+  | {% if !{condition} %}
+  if block
+    block
+  | {% endif %}
+
+mixin elif(condition)
+  | {% elif !{condition} %}
+  if block
+    block
+
+mixin else()
+  | {% else %}
+  if block
+    block
+
+mixin for(items, list)
+  -var condition = '{% for ' + attributes.items + ' in ' + attributes.list + ' %}'
+  | #{condition}
+  if block
+    block
+  | {% endfor %}
+
+mixin empty()
+  | {% empty %}
+  if block
+    block
+
+mixin include(path, ...items)
+  -var itemList = ''
+  if items
+    - itemList = 'with ' + items;
+  -var include = '{% include "!{path}" ' + itemList + ' %}';
+
+mixin extends(path)
+  | {% extends "!{path}" %}
+
+mixin comment
+  | {% comment %}
+  if block
+    block
+  | {% endcomment %}
+
+mixin _block(block_name)
+  | {% block !{ block_name } %}
+  if block
+    block
+  | {% endblock %}
+
+mixin static(resource, context_variable_name)
+  | {% static '!{ resource }' as !{ context_variable_name } %}
+
+mixin url(resource, context_variable_name)
+  | {% url '!{ resource }' as !{ context_variable_name } %}
+
+mixin cycleDiv(number)
+  -var items = ''
+  -var i = 0
+
+  while i < attributes.number-1
+    -items += '"" '
+    -i++
+
+  | {% cycle "<div class='#{attributes.class}'>" !{items} %}
+  if block
+    block
+  | {% cycle !{items} "</div>" %}
+
+mixin wrapperInLoop
+  +if('forloop.first')
+    | <div class='#{attributes.class}'>
+  if block
+    block
+  +if('forloop.last')
+    | </div>

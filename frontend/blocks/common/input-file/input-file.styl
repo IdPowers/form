@@ -1,0 +1,30 @@
+.input-file
+  $clearIndent = 10px
+  $clearSize = 12px
+
+  font-size 0
+  white-space nowrap
+
+  input[type='file']
+    display none
+
+  &__select
+    display inline-block
+    vertical-align middle
+    width 90px
+
+  &__name
+    display inline-block
+    vertical-align middle
+    margin-left 15px
+    width calc(100% - 137px)
+  &__text
+    min-height 20px
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+
+  &__select
+  &__name
+    &._hidden
+      display none

@@ -1,0 +1,11 @@
+{
+  "out": "index",
+  "htmlSrc": "../applications/companies/templates/companies/index.html",
+  "levels": [
+    "blocks/common"
+  ],
+  "addBlocks": [
+    "blocks/common/fixed/*.styl"
+  ],
+  "outSrc": "../applications/companies/static/companies/css/"
+}
