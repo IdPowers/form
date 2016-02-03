@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from .base import *
 
+__author__ = 'vadim'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -13,8 +15,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-__author__ = 'vadim'
 
 MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
